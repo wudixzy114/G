@@ -7,5 +7,6 @@
   "name": "我的项目 API 文档",
   "includeVersion": true,
   "cleanOutputDir": true,
-  "exclude": ["**/node_modules/**", "**/*.spec.ts", "**/*.test.ts"]
+  "exclude": ["**/node_modules/**", "**/*.spec.ts", "**/*.test.ts"],
+  "tsconfig": "./tsconfig.app.json"
 }
