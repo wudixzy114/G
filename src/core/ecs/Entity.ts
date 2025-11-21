@@ -1,4 +1,5 @@
 import type {ComponentType, EntityID, IComponent, IEntity} from "@/shared/types/ecs.ts";
+import type {DeepReadonly} from "rxdb";
 
 /**
  *实体类
@@ -73,9 +74,13 @@ export class Entity {
      *反序列化
      * @param json
      */
-    fromJSON(json: IEntity) {
+    fromJSON(json: DeepReadonly<IEntity>) {
         this.id = json.id;
-        this.components = {...json.components};
+        if (json.components) {
+            this.components = structuredClone(json.components);
+        } else {
+            this.components = {};
+        }
         this.tags = new Set(json.tags);
         return this;
     }
