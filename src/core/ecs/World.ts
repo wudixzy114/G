@@ -3,19 +3,19 @@ import {System} from './System';
 import type {EntityID, IWorldSnapshot} from '@/shared/types/ecs';
 
 /**
- * @description 世界
+ *世界
  */
 export class World {
     /**
-     * @description 实体列表
+     *实体列表
      */
     entities: Map<EntityID, Entity> = new Map();
     /**
-     * @description 系统列表
+     *系统列表
      */
     systems: System[] = [];
     /**
-     * @description 游戏刻
+     *游戏刻
      */
     tickCount: number = 0;
 
@@ -23,7 +23,7 @@ export class World {
     }
 
     /**
-     * @description 添加系统
+     *添加系统
      * @param systemClass
      */
     addSystem(systemClass: new (world: World) => System) {
@@ -32,7 +32,7 @@ export class World {
     }
 
     /**
-     * @description 创建实体
+     *创建实体
      * @param id
      */
     createEntity(id: EntityID): Entity {
@@ -42,7 +42,7 @@ export class World {
     }
 
     /**
-     * @description 移除实体
+     *移除实体
      * @param id
      */
     removeEntity(id: EntityID) {
@@ -50,7 +50,7 @@ export class World {
     }
 
     /**
-     * @description 更新世界
+     *更新世界
      * @param deltaTime
      */
     update(deltaTime: number) {
@@ -61,7 +61,7 @@ export class World {
     }
 
     /**
-     * @description 获取快照
+     *获取快照
      */
     getSnapshot(): IWorldSnapshot {
         const plainEntities = Array.from(this.entities.values()).map(e => e.toJSON());
@@ -73,7 +73,7 @@ export class World {
     }
 
     /**
-     * @description 查询实体
+     *查询实体
      * @param filter
      */
     queryEntities(filter: (e: Entity) => boolean): Entity[] {

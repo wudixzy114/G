@@ -1,19 +1,19 @@
 import type {ComponentType, EntityID, IComponent, IEntity} from "@/shared/types/ecs.ts";
 
 /**
- * @description 实体类
+ *实体类
  */
 export class Entity {
     /**
-     * @description 实体ID
+     *实体ID
      */
     id: EntityID;
     /**
-     * @description 组件列表
+     *组件列表
      */
     components: Partial<Record<ComponentType, IComponent>> = {};
     /**
-     * @description 标签列表
+     *标签列表
      */
     tags: Set<string> = new Set();
 
@@ -25,7 +25,7 @@ export class Entity {
     }
 
     /**
-     * @description 添加组件
+     *添加组件
      * @param component
      */
     addComponent(component: IComponent) {
@@ -34,7 +34,7 @@ export class Entity {
     }
 
     /**
-     * @description 获取组件
+     *获取组件
      * @param type
      */
     getComponent<T extends IComponent>(type: ComponentType): T | undefined {
@@ -42,7 +42,7 @@ export class Entity {
     }
 
     /**
-     * @description 是否有组件
+     *是否有组件
      * @param type
      */
     hasComponent(type: ComponentType): boolean {
@@ -50,7 +50,7 @@ export class Entity {
     }
 
     /**
-     * @description 添加标签
+     *添加标签
      * @param tag
      */
     addTag(tag: string) {
@@ -59,7 +59,7 @@ export class Entity {
     }
 
     /**
-     * @description 序列化
+     *序列化
      */
     toJSON(): IEntity {
         return {
@@ -70,7 +70,7 @@ export class Entity {
     }
 
     /**
-     * @description 反序列化
+     *反序列化
      * @param json
      */
     fromJSON(json: IEntity) {

@@ -27,7 +27,7 @@ export const ComponentType = {
     Stats: 'Stats',
     /**
      * The narrative state of an entity.
-     * @zh 剧情状态
+     *剧情状态
      */
     Narrative: 'Narrative',
 } as const;

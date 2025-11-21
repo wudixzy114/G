@@ -1,11 +1,11 @@
 import {World} from './World.ts'
 
 /**
- * @description 系统基类
+ *系统基类
  */
 export abstract class System {
     /**
-     * @description 世界
+     *世界
      * @protected
      */
     protected world: World;
@@ -19,7 +19,7 @@ export abstract class System {
     }
 
     /**
-     * @description 更新
+     *更新
      * @param deltaTime
      */
     abstract update(deltaTime: number): void;
