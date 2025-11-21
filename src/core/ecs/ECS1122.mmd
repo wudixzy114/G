@@ -1,0 +1,57 @@
+classDiagram
+    %% 接口定义
+    class IComponent["IComponent "] {
+        <<interface>>
+    }
+
+    %% 组件基类
+    class BaseComponent~T~["BaseComponent~T~ "] {
+        <<abstract>>
+        +_type: ComponentType
+        +data: T 
+        #constructor(data: T) 
+    }
+    %% BaseComponent 实现 IComponent
+    BaseComponent ..|> IComponent : implements
+
+    %% 实体类
+    class Entity["Entity "] {
+        +id: EntityID 
+        +components: Partial~Record~ComponentType, IComponent~~ 
+        +tags: Set~string~ 
+        +constructor(id: EntityID) 
+        +addComponent(component: IComponent) Entity 
+        +getComponent(type: ComponentType) T 
+        +hasComponent(type: ComponentType) boolean 
+        +addTag(tag: string) Entity 
+        +toJSON() IEntity 
+        +fromJSON(json: IEntity) Entity 
+    }
+    Entity o-- IComponent : contains
+
+    %% 系统基类
+    class System["System "] {
+        <<abstract>>
+        #world: World 
+        #constructor(world: World) 
+        +update(deltaTime: number)* 
+    }
+
+    %% 世界类
+    class World["World "] {
+        +entities: Map~EntityID, Entity~ 
+        +systems: System[] 
+        +tickCount: number 
+        +constructor() 
+        +addSystem(systemClass) 
+        +createEntity(id: EntityID) Entity 
+        +removeEntity(id: EntityID) 
+        +update(deltaTime: number) 
+        +getSnapshot() IWorldSnapshot 
+        +queryEntities(filter) Entity[] 
+    }
+
+    %% 关系描述
+    World *-- Entity : manages
+    World *-- System : runs
+    System --> World : references

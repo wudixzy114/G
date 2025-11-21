@@ -1,6 +1,7 @@
 import {Entity} from './Entity';
 import {System} from './System';
 import type {EntityID, IWorldSnapshot} from '@/shared/types/ecs';
+import {EntityRepository} from "@/core/db/repository.ts";
 
 /**
  *世界
@@ -18,6 +19,9 @@ export class World {
      *游戏刻
      */
     tickCount: number = 0;
+
+    // 标记世界是否已准备好 (数据加载完毕)
+    isReady: boolean = false;
 
     constructor() {
     }
@@ -84,5 +88,34 @@ export class World {
             }
         }
         return result;
+    }
+
+    // 核心：从数据库初始化世界
+    async init() {
+        console.log('World: Loading entities from DB...');
+        const storedEntities = await EntityRepository.loadAll();
+
+        if (storedEntities.length === 0) {
+            console.log('World: New Game created.');
+            // TODO: 这里可以调用一个种子函数来生成初始世界
+        } else {
+            console.log(`World: Restored ${storedEntities.length} entities.`);
+            for (const data of storedEntities) {
+                const entity = new Entity(data.id).fromJSON(data);
+                this.entities.set(entity.id, entity);
+            }
+        }
+
+        this.isReady = true;
+    }
+
+    // 核心：保存世界状态到数据库
+    async save() {
+        if (!this.isReady) return;
+
+        console.log('World: Saving...');
+        const allData = Array.from(this.entities.values()).map(e => e.toJSON());
+        await EntityRepository.saveBatch(allData);
+        console.log('World: Saved.');
     }
 }

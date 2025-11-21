@@ -75,7 +75,7 @@ export class Entity {
      */
     fromJSON(json: IEntity) {
         this.id = json.id;
-        this.components = json.components;
+        this.components = {...json.components};
         this.tags = new Set(json.tags);
         return this;
     }
