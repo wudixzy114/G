@@ -77,6 +77,15 @@ self.onmessage = async (event: MessageEvent<IWorkerMessage<any>>) => {
             break;
 
         case WorkerMessageType.PLAYER_INPUT:
+            // 简单的调试逻辑：如果是 DEBUG_CREATE，则创建一个实体
+            if (payload.action === 'DEBUG_CREATE') {
+                const id = `test_entity_${Date.now()}`;
+                console.log('Worker: Creating debug entity', id);
+
+                const entity = world.createEntity(id);
+                entity.addTag('Player');
+                // 这里可以添加更多组件...
+            }
             // TODO: 将输入转化为 ECS 中的 Component 或 Event
             console.log('Worker received input:', payload);
             // 示例: world.addInputEvent(payload);

@@ -1,12 +1,20 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": ["./src"],
+  "entryPoints": [
+    "./src"
+  ],
   "entryPointStrategy": "expand",
   "out": "docs/api",
-  "plugin": ["typedoc-plugin-vue"],
+  "plugin": [
+    "typedoc-plugin-vue"
+  ],
   "name": "我的项目 API 文档",
   "includeVersion": true,
   "cleanOutputDir": true,
-  "exclude": ["**/node_modules/**", "**/*.spec.ts", "**/*.test.ts"],
-  "tsconfig": "./tsconfig.app.json"
+  "exclude": [
+    "**/node_modules/**",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "tsconfig": "./tsconfig.doc.json"
 }

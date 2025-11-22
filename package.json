@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "docs:api": "typedoc"
+    "docs:api": "typedoc --tsconfig tsconfig.doc.json"
   },
   "dependencies": {
     "ajv": "^8.17.1",

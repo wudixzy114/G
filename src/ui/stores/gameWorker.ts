@@ -102,6 +102,14 @@ export const useGameWorkerStore = defineStore('gameWorker', () => {
         postMessage({type: WorkerMessageType.SAVE, payload: undefined});
     };
 
+    // 将 postMessage 暴露给外部，或者封装一个 input 函数
+    const sendPlayerInput = (action: string, data: any = {}) => {
+        postMessage({
+            type: WorkerMessageType.PLAYER_INPUT,
+            payload: {action, payload: data}
+        });
+    };
+
     return {
         /**
          * A flag indicating whether the game worker is ready.
@@ -130,6 +138,8 @@ export const useGameWorkerStore = defineStore('gameWorker', () => {
         /**
          * Saves the game state.
          */
-        saveGame
+        saveGame,
+        postMessage,
+        sendPlayerInput
     };
 });
