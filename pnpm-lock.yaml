@@ -11,6 +11,9 @@ importers:
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
+      dexie:
+        specifier: ^4.2.1
+        version: 4.2.1
       phaser:
         specifier: ^3.90.0
         version: 3.90.0
@@ -1167,6 +1170,9 @@ packages:
 
   dexie@4.0.10:
     resolution: {integrity: sha512-eM2RzuR3i+M046r2Q0Optl3pS31qTWf8aFuA7H9wnsHTwl8EPvroVLwvQene/6paAs39Tbk6fWZcn2aZaHkc/w==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.0.10.tgz}
+
+  dexie@4.2.1:
+    resolution: {integrity: sha512-Ckej0NS6jxQ4Po3OrSQBFddayRhTCic2DoCAG5zacOfOVB9P2Q5Xc5uL/nVa7ZVs+HdMnvUPzLFCB/JwpB6Csg==, tarball: https://registry.npmjs.org/dexie/-/dexie-4.2.1.tgz}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==, tarball: https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz}
@@ -3147,6 +3153,8 @@ snapshots:
     optional: true
 
   dexie@4.0.10: {}
+
+  dexie@4.2.1: {}
 
   dunder-proto@1.0.1:
     dependencies:

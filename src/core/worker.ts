@@ -59,6 +59,7 @@ self.onmessage = async (event: MessageEvent<IWorkerMessage<any>>) => {
                 await world.init();
                 postToMain(MainMessageType.READY, undefined);
             } catch (err) {
+                console.error('❌ Worker Init Error Details:', err);
                 postToMain(MainMessageType.ERROR, {message: 'DB Init Failed'});
             }
             break;

@@ -1,8 +1,14 @@
-import { createRxDatabase, type RxDatabase, type RxCollection } from 'rxdb';
-import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-import { EntitySchema } from './schema/entity.schema';
-import type { IEntity } from '@/shared/types/ecs';
+import {createRxDatabase, type RxDatabase, type RxCollection, addRxPlugin} from 'rxdb';
+import {getRxStorageDexie} from 'rxdb/plugins/storage-dexie';
+import {EntitySchema} from './schema/entity.schema';
+import type {IEntity} from '@/shared/types/ecs';
+import {RxDBDevModePlugin} from 'rxdb/plugins/dev-mode';
+import {wrappedValidateAjvStorage} from "rxdb/plugins/validate-ajv";
 
+if (import.meta.env.DEV) {
+    addRxPlugin(RxDBDevModePlugin);
+    console.log('RxDB DevMode enabled synchronously');
+}
 /**
  * Defines the collections that are available in the game database.
  */
@@ -28,10 +34,15 @@ let dbPromise: Promise<GameDatabase> | null = null;
 const _createDatabase = async (): Promise<GameDatabase> => {
     console.log('Database: Initializing...');
 
+    const storage = import.meta.env.DEV
+        ? wrappedValidateAjvStorage({storage: getRxStorageDexie()})
+        : getRxStorageDexie();
+
     const db = await createRxDatabase<GameDatabaseCollections>({
         name: 'openworld_rpg_db',
-        storage: getRxStorageDexie(),
+        storage: storage,
         ignoreDuplicate: true, // Prevents errors during hot-reloading in development mode
+        multiInstance: false
     });
 
     await db.addCollections({
