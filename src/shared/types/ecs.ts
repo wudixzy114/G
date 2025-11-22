@@ -95,41 +95,110 @@ export interface IBaseInfoComponent extends IComponent {
      */
     name: string;
     /**
-     * A brief description of the entity.
+     * The type of the entity, e.g., 'room', 'npc', 'item', or 'player'.
      */
     type: 'room' | 'npc' | 'item' | 'player';
 }
 
+/**
+ * Represents a component that provides a short and long description for an entity.
+ */
 export interface IDescriptionComponent extends IComponent {
     _type: ComponentType.Description;
+    /**
+     * A short description of the entity.
+     */
     short: string;
+    /**
+     * A long, more detailed description of the entity.
+     */
     long: string;
 }
 
+/**
+ * Represents a single entry in the narrative log.
+ */
 export interface LogEntry {
+    /**
+     * The unique identifier for the log entry.
+     */
     id: string;
+    /**
+     * The text content of the log entry.
+     */
     text: string;
+    /**
+     * The type of the log entry, e.g., 'info', 'dialogue', 'combat', or 'system'.
+     */
     type: 'info' | 'dialogue' | 'combat' | 'system';
+    /**
+     * The timestamp when the log entry was created.
+     */
     timestamp: number;
 }
 
+/**
+ * Represents a component that stores a history of narrative log entries for an entity.
+ */
 export interface INarrativeLogComponent extends IComponent {
     _type: ComponentType.NarrativeLog;
+    /**
+     * An array of log entries, forming the narrative history.
+     */
     history: LogEntry[];
 }
 
+/**
+ * Represents a single choice action available to the player.
+ */
 export interface ChoiceAction {
+    /**
+     * The unique identifier for the choice action.
+     */
     id: string;
+    /**
+     * The label displayed for the choice.
+     */
     label: string;
+    /**
+     * The type of action this choice triggers.
+     */
     actionType: string;
+    /**
+     * Optional payload data associated with the action.
+     */
     payload?: any;
 }
 
+/**
+ * Represents a component that holds a list of choices available to an entity.
+ */
 export interface IChoiceListComponent extends IComponent {
     _type: ComponentType.ChoiceList;
+    /**
+     * An array of available choice actions.
+     */
     choices: ChoiceAction[];
 }
 
+/**
+ * Represents a component that defines the 2D position of an entity in the game world.
+ */
+export interface IPositionComponent extends IComponent {
+    _type: ComponentType.Position;
+    /**
+     * The x-coordinate of the entity's position.
+     */
+    x: number;
+    /**
+     * The y-coordinate of the entity's position.
+     */
+    y: number;
+}
+
+/**
+ * A union type representing all possible game components.
+ */
 export type GameComponent =
     | IBaseInfoComponent
     | IDescriptionComponent

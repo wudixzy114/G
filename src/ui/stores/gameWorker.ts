@@ -103,6 +103,11 @@ export const useGameWorkerStore = defineStore('gameWorker', () => {
     };
 
     // 将 postMessage 暴露给外部，或者封装一个 input 函数
+    /**
+     * Sends player input to the game worker.
+     * @param action The action string representing the player's input (e.g., 'move', 'attack').
+     * @param data Optional payload associated with the action.
+     */
     const sendPlayerInput = (action: string, data: any = {}) => {
         postMessage({
             type: WorkerMessageType.PLAYER_INPUT,
@@ -139,7 +144,16 @@ export const useGameWorkerStore = defineStore('gameWorker', () => {
          * Saves the game state.
          */
         saveGame,
+        /**
+         * Posts a message to the game worker.
+         * @param message The message to post.
+         */
         postMessage,
+        /**
+         * Sends player input to the game worker.
+         * @param action The action string representing the player's input (e.g., 'move', 'attack').
+         * @param data Optional payload associated with the action.
+         */
         sendPlayerInput
     };
 });

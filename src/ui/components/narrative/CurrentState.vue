@@ -11,6 +11,12 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * Props for the CurrentState component.
+ * @property {string} roomName - The name of the current room or location.
+ * @property {string} roomDesc - A brief description of the current room or location.
+ * @property {number} turn - The current turn number in the game.
+ */
 defineProps<{
   roomName: string,
   roomDesc: string,

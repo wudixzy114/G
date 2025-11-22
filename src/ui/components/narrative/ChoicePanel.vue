@@ -21,10 +21,19 @@
 <script lang="ts" setup>
 import {type ChoiceAction} from '@/shared/types/ecs.ts';
 
+/**
+ * Props for the ChoicePanel component.
+ * @property {ChoiceAction[]} choices - An array of available choices to display.
+ */
 defineProps<{
   choices: ChoiceAction[]
 }>();
 
+/**
+ * Emits for the ChoicePanel component.
+ * @event select - Emitted when a choice is selected.
+ * @param {ChoiceAction} choice - The selected choice action.
+ */
 const emit = defineEmits<{
   (e: 'select', choice: ChoiceAction): void
 }>();

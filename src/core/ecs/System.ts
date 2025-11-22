@@ -9,14 +9,14 @@ export abstract class System {
      * The world instance that this system belongs to.
      * @protected
      */
-    protected world: World;
+    world: World;
 
     /**
      * Creates a new System instance.
      * @param world The world instance that this system will operate on.
      * @protected
      */
-    protected constructor(world: World) {
+    constructor(world: World) {
         this.world = world;
     }
 

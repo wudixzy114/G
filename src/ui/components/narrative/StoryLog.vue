@@ -29,13 +29,24 @@
 import {ref, watch, nextTick} from 'vue';
 import {type LogEntry} from '@/shared/types/ecs.ts';
 
+/**
+ * Props for the StoryLog component.
+ * @property {LogEntry[]} logs - An array of log entries to display in the story log.
+ */
 const props = defineProps<{
   logs: LogEntry[]
 }>();
 
+/**
+ * A ref to the HTML element that serves as the container for the log entries.
+ * Used for programmatic scrolling to the bottom of the log.
+ */
 const logContainer = ref<HTMLElement | null>(null);
 
-// 自动滚动到底部
+/**
+ * Watches for changes in the number of log entries and automatically scrolls the log container to the bottom.
+ * This ensures that the latest log entries are always visible to the user.
+ */
 watch(() => props.logs.length, async () => {
   await nextTick();
   if (logContainer.value) {

@@ -38,7 +38,13 @@ export interface WorkerMessagePayloads {
     [WorkerMessageType.STOP]: undefined;
     [WorkerMessageType.SAVE]: undefined;
     [WorkerMessageType.PLAYER_INPUT]: {
+        /**
+         * The specific action to be performed (e.g., 'move', 'attack').
+         */
         action: string;
+        /**
+         * The data associated with the action, which varies depending on the action type.
+         */
         payload: any; // The specific data for the command, to be refined later
     };
 }
@@ -81,9 +87,21 @@ export enum MainMessageType {
  * Defines the payload for each type of main thread message.
  */
 export interface MainMessagePayloads {
+    /**
+     * No payload is required for the READY message.
+     */
     [MainMessageType.READY]: undefined;
+    /**
+     * The payload for the SNAPSHOT message, containing a snapshot of the game world.
+     */
     [MainMessageType.SNAPSHOT]: IWorldSnapshot;
+    /**
+     * No payload is required for the SAVED message.
+     */
     [MainMessageType.SAVED]: undefined;
+    /**
+     * The payload for the ERROR message, containing details about the error.
+     */
     [MainMessageType.ERROR]: { message: string };
 }
 

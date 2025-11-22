@@ -83,13 +83,26 @@ import {computed} from 'vue';
 import {useGameWorkerStore} from '@/ui/stores/gameWorker.ts';
 import {WorkerMessageType} from '@/shared/types/worker.ts';
 
+/**
+ * Initializes the game worker store to access game state and actions.
+ */
 const store = useGameWorkerStore();
 
-// 计算属性：方便展示
+/**
+ * Computed property that returns the current game tick from the latest world snapshot.
+ * Defaults to 0 if no snapshot is available.
+ */
 const tick = computed(() => store.latestSnapshot?.tick || 0);
+/**
+ * Computed property that returns the number of entities in the latest world snapshot.
+ * Defaults to 0 if no snapshot is available.
+ */
 const entityCount = computed(() => store.latestSnapshot?.entities.length || 0);
 
-// 发送调试指令给 Worker
+/**
+ * Sends a debug command to the game worker to create a test entity.
+ * This function demonstrates how to interact with the game worker for debugging purposes.
+ */
 const createTestEntity = () => {
   // 我们通过 store 暴露的 postMessage 机制（或者手动调用）
   // 由于 store 里我们封装了 start/stop/save，但没暴露通用的 send

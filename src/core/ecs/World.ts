@@ -2,6 +2,7 @@ import {Entity} from './Entity';
 import {System} from './System';
 import type {EntityID, IWorldSnapshot} from '@/shared/types/ecs';
 import {EntityRepository} from "@/core/db/repository.ts";
+import {type WorkerMessagePayloads, WorkerMessageType} from "@/shared/types/worker.ts";
 
 /**
  * The World class is the container for all entities, components, and systems.
@@ -26,6 +27,15 @@ export class World {
      */
     isReady: boolean = false;
 
+    /**
+     * A queue for player inputs.
+     * @internal
+     */
+    inputQueue: WorkerMessagePayloads[WorkerMessageType.PLAYER_INPUT][] = [];
+
+    /**
+     * Creates a new World instance.
+     */
     constructor() {
     }
 
@@ -94,6 +104,24 @@ export class World {
             }
         }
         return result;
+    }
+
+    /**
+     * Pushes a player input to the queue.
+     * @param input The player input to push.
+     */
+    pushInput(input: WorkerMessagePayloads[WorkerMessageType.PLAYER_INPUT]) {
+        this.inputQueue.push(input);
+    }
+
+    /**
+     * Consumes all player inputs from the queue.
+     * @returns An array of player inputs.
+     */
+    consumeInputs(): WorkerMessagePayloads[WorkerMessageType.PLAYER_INPUT][] {
+        const inputs = [...this.inputQueue];
+        this.inputQueue = [];
+        return inputs;
     }
 
     /**
