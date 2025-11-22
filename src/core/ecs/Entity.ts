@@ -2,65 +2,75 @@ import type {ComponentType, EntityID, IComponent, IEntity} from "@/shared/types/
 import type {DeepReadonly} from "rxdb";
 
 /**
- *实体类
+ * Represents an entity in the ECS architecture.
+ * An entity is a container for components and is identified by a unique ID.
  */
 export class Entity {
     /**
-     *实体ID
+     * The unique identifier for the entity.
      */
     id: EntityID;
+
     /**
-     *组件列表
+     * A map of components attached to the entity, indexed by their type.
      */
     components: Partial<Record<ComponentType, IComponent>> = {};
+
     /**
-     *标签列表
+     * A set of tags associated with the entity for grouping or identification.
      */
     tags: Set<string> = new Set();
 
     /**
-     * @param id
+     * Creates a new Entity instance.
+     * @param id The unique identifier for the entity.
      */
     constructor(id: EntityID) {
         this.id = id;
     }
 
     /**
-     *添加组件
-     * @param component
+     * Adds a component to the entity.
+     * @param component The component to add.
+     * @returns The entity instance for chaining.
      */
-    addComponent(component: IComponent) {
+    addComponent(component: IComponent): this {
         this.components[component._type] = component;
         return this;
     }
 
     /**
-     *获取组件
-     * @param type
+     * Retrieves a component from the entity by its type.
+     * @param type The type of the component to retrieve.
+     * @returns The component instance, or undefined if not found.
+     * @template T The type of the component to retrieve.
      */
     getComponent<T extends IComponent>(type: ComponentType): T | undefined {
         return this.components[type] as T;
     }
 
     /**
-     *是否有组件
-     * @param type
+     * Checks if the entity has a component of a given type.
+     * @param type The type of the component to check for.
+     * @returns True if the component exists, false otherwise.
      */
     hasComponent(type: ComponentType): boolean {
         return !!this.components[type];
     }
 
     /**
-     *添加标签
-     * @param tag
+     * Adds a tag to the entity.
+     * @param tag The tag to add.
+     * @returns The entity instance for chaining.
      */
-    addTag(tag: string) {
+    addTag(tag: string): this {
         this.tags.add(tag);
         return this;
     }
 
     /**
-     *序列化
+     * Serializes the entity to a plain JSON object.
+     * @returns An IEntity object representing the entity's state.
      */
     toJSON(): IEntity {
         return {
@@ -71,10 +81,11 @@ export class Entity {
     }
 
     /**
-     *反序列化
-     * @param json
+     * Deserializes the entity from a plain JSON object.
+     * @param json The IEntity object to deserialize from.
+     * @returns The entity instance for chaining.
      */
-    fromJSON(json: DeepReadonly<IEntity>) {
+    fromJSON(json: DeepReadonly<IEntity>): this {
         this.id = json.id;
         if (json.components) {
             this.components = structuredClone(json.components);

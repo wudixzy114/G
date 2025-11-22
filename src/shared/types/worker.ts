@@ -1,42 +1,85 @@
 // src/shared/types/worker.ts
 import type {IWorldSnapshot} from './ecs';
 
-// ----- 主线程发送给 Worker 的消息 -----
+// ----- Messages sent from the main thread to the worker -----
 
+/**
+ * Enumerates the types of messages that can be sent from the main thread to the worker.
+ */
 export enum WorkerMessageType {
-    INIT = 'INIT',         // 初始化世界 (加载 DB)
-    START = 'START',       // 开始游戏循环
-    STOP = 'STOP',         // 暂停游戏循环
-    SAVE = 'SAVE',         // 手动触发保存
-    PLAYER_INPUT = 'PLAYER_INPUT', // 玩家操作指令 (如移动、攻击、对话)
+    /**
+     * Initializes the game world, including loading data from the database.
+     */
+    INIT = 'INIT',
+    /**
+     * Starts the game loop.
+     */
+    START = 'START',
+    /**
+     * Pauses the game loop.
+     */
+    STOP = 'STOP',
+    /**
+     * Manually triggers a save of the game state.
+     */
+    SAVE = 'SAVE',
+    /**
+     * Represents a player input command, such as moving, attacking, or interacting with objects.
+     */
+    PLAYER_INPUT = 'PLAYER_INPUT',
 }
 
+/**
+ * Defines the payload for each type of worker message.
+ */
 export interface WorkerMessagePayloads {
-    [WorkerMessageType.INIT]: undefined; // 不需要负载
+    [WorkerMessageType.INIT]: undefined; // No payload required
     [WorkerMessageType.START]: undefined;
     [WorkerMessageType.STOP]: undefined;
     [WorkerMessageType.SAVE]: undefined;
     [WorkerMessageType.PLAYER_INPUT]: {
         action: string;
-        payload: any; // 具体的指令数据，后续细化
+        payload: any; // The specific data for the command, to be refined later
     };
 }
 
+/**
+ * Represents a message sent from the main thread to the worker.
+ * @template T The type of the message.
+ */
 export interface IWorkerMessage<T extends WorkerMessageType> {
     type: T;
     payload: WorkerMessagePayloads[T];
 }
 
 
-// ----- Worker 发送给 主线程 的消息 -----
+// ----- Messages sent from the worker to the main thread -----
 
+/**
+ * Enumerates the types of messages that can be sent from the worker to the main thread.
+ */
 export enum MainMessageType {
-    READY = 'READY',             // 世界加载完成
-    SNAPSHOT = 'SNAPSHOT',       // 每一帧的世界快照
-    SAVED = 'SAVED',             // 保存完成通知
-    ERROR = 'ERROR',             // 错误通知
+    /**
+     * Indicates that the world has finished loading.
+     */
+    READY = 'READY',
+    /**
+     * A snapshot of the world state for a single frame.
+     */
+    SNAPSHOT = 'SNAPSHOT',
+    /**
+     * A notification that the game state has been saved.
+     */
+    SAVED = 'SAVED',
+    /**
+     * A notification of an error that occurred in the worker.
+     */
+    ERROR = 'ERROR',
 }
 
+/**
+ * Defines the payload for each type of main thread message.
+ */
 export interface MainMessagePayloads {
     [MainMessageType.READY]: undefined;
     [MainMessageType.SNAPSHOT]: IWorldSnapshot;
@@ -44,6 +87,10 @@ export interface MainMessagePayloads {
     [MainMessageType.ERROR]: { message: string };
 }
 
+/**
+ * Represents a message sent from the worker to the main thread.
+ * @template T The type of the message.
+ */
 export interface IMainMessage<T extends MainMessageType> {
     type: T;
     payload: MainMessagePayloads[T];

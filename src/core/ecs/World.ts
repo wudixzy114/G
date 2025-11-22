@@ -4,31 +4,34 @@ import type {EntityID, IWorldSnapshot} from '@/shared/types/ecs';
 import {EntityRepository} from "@/core/db/repository.ts";
 
 /**
- *世界
+ * The World class is the container for all entities, components, and systems.
+ * It manages the game state and the ECS lifecycle.
  */
 export class World {
     /**
-     *实体列表
+     * A map of all entities in the world, with the entity ID as the key.
      */
     entities: Map<EntityID, Entity> = new Map();
     /**
-     *系统列表
+     * An array of all systems in the world.
      */
     systems: System[] = [];
     /**
-     *游戏刻
+     * The current tick count of the game loop.
      */
     tickCount: number = 0;
 
-    // 标记世界是否已准备好 (数据加载完毕)
+    /**
+     * A flag indicating whether the world has been initialized with data.
+     */
     isReady: boolean = false;
 
     constructor() {
     }
 
     /**
-     *添加系统
-     * @param systemClass
+     * Adds a new system to the world.
+     * @param systemClass The class of the system to add.
      */
     addSystem(systemClass: new (world: World) => System) {
         const system = new systemClass(this);
@@ -36,8 +39,9 @@ export class World {
     }
 
     /**
-     *创建实体
-     * @param id
+     * Creates a new entity in the world.
+     * @param id The ID of the entity to create.
+     * @returns The newly created entity.
      */
     createEntity(id: EntityID): Entity {
         const entity = new Entity(id);
@@ -46,16 +50,16 @@ export class World {
     }
 
     /**
-     *移除实体
-     * @param id
+     * Removes an entity from the world.
+     * @param id The ID of the entity to remove.
      */
     removeEntity(id: EntityID) {
         this.entities.delete(id);
     }
 
     /**
-     *更新世界
-     * @param deltaTime
+     * Updates the world by executing all systems.
+     * @param deltaTime The time elapsed since the last update, in seconds.
      */
     update(deltaTime: number) {
         this.tickCount++;
@@ -65,7 +69,8 @@ export class World {
     }
 
     /**
-     *获取快照
+     * Creates a snapshot of the current state of the world.
+     * @returns A snapshot of the world.
      */
     getSnapshot(): IWorldSnapshot {
         const plainEntities = Array.from(this.entities.values()).map(e => e.toJSON());
@@ -77,8 +82,9 @@ export class World {
     }
 
     /**
-     *查询实体
-     * @param filter
+     * Queries for entities that match a given filter.
+     * @param filter A function that returns true if an entity should be included in the result.
+     * @returns An array of entities that match the filter.
      */
     queryEntities(filter: (e: Entity) => boolean): Entity[] {
         const result: Entity[] = [];
@@ -90,14 +96,16 @@ export class World {
         return result;
     }
 
-    // 核心：从数据库初始化世界
+    /**
+     * Initializes the world by loading entities from the database.
+     */
     async init() {
         console.log('World: Loading entities from DB...');
         const storedEntities = await EntityRepository.loadAll();
 
         if (storedEntities.length === 0) {
             console.log('World: New Game created.');
-            // TODO: 这里可以调用一个种子函数来生成初始世界
+            // TODO: This is where a seeding function can be called to generate the initial world
         } else {
             console.log(`World: Restored ${storedEntities.length} entities.`);
             for (const data of storedEntities) {
@@ -109,7 +117,9 @@ export class World {
         this.isReady = true;
     }
 
-    // 核心：保存世界状态到数据库
+    /**
+     * Saves the current state of the world to the database.
+     */
     async save() {
         if (!this.isReady) return;
 

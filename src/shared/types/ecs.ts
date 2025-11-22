@@ -27,7 +27,6 @@ export enum ComponentType {
     Stats = 'Stats',
     /**
      * The narrative state of an entity.
-     *剧情状态
      */
     Narrative = 'Narrative',
 }

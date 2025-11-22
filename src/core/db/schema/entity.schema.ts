@@ -1,5 +1,9 @@
 import type {RxJsonSchema} from "rxdb";
 
+/**
+ * The literal definition of the entity schema.
+ * This is used to define the structure of the entity documents in the database.
+ */
 export const ENTITY_SCHEMA_LITERAL = {
     title: 'entity schema',
     version: 0,
@@ -23,4 +27,7 @@ export const ENTITY_SCHEMA_LITERAL = {
     required: ['id', 'components', 'tags']
 } as const;
 
+/**
+ * The RxDB schema for the entity collection.
+ */
 export const EntitySchema: RxJsonSchema<any> = ENTITY_SCHEMA_LITERAL;
