@@ -8,31 +8,29 @@ export type EntityID = string;
 /**
  * Enumerates the available component types in the Entity-Component-System (ECS).
  */
-export const ComponentType = {
+export enum ComponentType {
     /**
      * Basic information about an entity, such as name and description.
      */
-    BaseInfo: 'BaseInfo',
+    BaseInfo = 'BaseInfo',
     /**
      * The position of an entity in the game world.
      */
-    Position: 'Position',
+    Position = 'Position',
     /**
      * The inventory of an entity, containing items.
      */
-    Inventory: 'Inventory',
+    Inventory = 'Inventory',
     /**
      * The stats of an entity, such as health, mana, etc.
      */
-    Stats: 'Stats',
+    Stats = 'Stats',
     /**
      * The narrative state of an entity.
      *剧情状态
      */
-    Narrative: 'Narrative',
-} as const;
-
-export type ComponentType = (typeof ComponentType)[keyof typeof ComponentType];
+    Narrative = 'Narrative',
+}
 
 /**
  * The base interface for all components.
@@ -49,7 +47,7 @@ export interface IComponent {
  * An entity is a general-purpose object. In an ECS architecture, entities are "things" that exist in the game world.
  * Each entity is unique and is composed of one or more components.
  */
-export interface IEntity{
+export interface IEntity {
     /**
      * The unique identifier of the entity.
      */
@@ -59,7 +57,7 @@ export interface IEntity{
      * The keys are the component types, and the values are the component instances.
      */
     components: {
-        [key in ComponentType]? : IComponent
+        [key in ComponentType]?: IComponent
     };
     /**
      * A list of tags associated with the entity.
@@ -71,7 +69,7 @@ export interface IEntity{
 /**
  * Represents a snapshot of the entire game world at a specific moment in time.
  */
-export interface IWorldSnapshot{
+export interface IWorldSnapshot {
     /**
      * The simulation tick at which the snapshot was taken.
      */
