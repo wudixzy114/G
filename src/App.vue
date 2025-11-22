@@ -1,9 +1,11 @@
 <template>
   <GameDebug/>
+  <GameView/>
 </template>
 
 <script lang="ts" setup>
 import GameDebug from '@/ui/views/GameDebug.vue';
+import GameView from "@/ui/views/GameView.vue";
 </script>
 
 <style>

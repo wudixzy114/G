@@ -20,7 +20,7 @@ export enum ComponentType {
     /**
      * The inventory of an entity, containing items.
      */
-    Inventory = 'Inventory',
+    ChoiceList = 'ChoiceList',
     /**
      * The stats of an entity, such as health, mana, etc.
      */
@@ -28,7 +28,11 @@ export enum ComponentType {
     /**
      * The narrative state of an entity.
      */
-    Narrative = 'Narrative',
+    NarrativeLog = 'NarrativeLog',
+    /**
+     * The description of an entity.
+     */
+    Description = 'Description',
 }
 
 /**
@@ -83,3 +87,52 @@ export interface IWorldSnapshot {
      */
     globalState: Record<string, any>;
 }
+
+export interface IBaseInfoComponent extends IComponent {
+    _type: ComponentType.BaseInfo;
+    /**
+     * The name of the entity.
+     */
+    name: string;
+    /**
+     * A brief description of the entity.
+     */
+    type: 'room' | 'npc' | 'item' | 'player';
+}
+
+export interface IDescriptionComponent extends IComponent {
+    _type: ComponentType.Description;
+    short: string;
+    long: string;
+}
+
+export interface LogEntry {
+    id: string;
+    text: string;
+    type: 'info' | 'dialogue' | 'combat' | 'system';
+    timestamp: number;
+}
+
+export interface INarrativeLogComponent extends IComponent {
+    _type: ComponentType.NarrativeLog;
+    history: LogEntry[];
+}
+
+export interface ChoiceAction {
+    id: string;
+    label: string;
+    actionType: string;
+    payload?: any;
+}
+
+export interface IChoiceListComponent extends IComponent {
+    _type: ComponentType.ChoiceList;
+    choices: ChoiceAction[];
+}
+
+export type GameComponent =
+    | IBaseInfoComponent
+    | IDescriptionComponent
+    | INarrativeLogComponent
+    | IChoiceListComponent
+    | IComponent

@@ -5,6 +5,7 @@ import {
     type IWorkerMessage,
     type MainMessagePayloads
 } from "@/shared/types/worker.ts";
+import {ComponentType} from "@/shared/types/ecs.ts";
 
 const world = new World();
 
@@ -57,6 +58,47 @@ self.onmessage = async (event: MessageEvent<IWorkerMessage<any>>) => {
         case WorkerMessageType.INIT:
             try {
                 await world.init();
+
+                if (world.entities.size === 0) {
+                    console.log("Worker: Creating Initial World State...");
+
+                    // 1. 创建玩家
+                    const player = world.createEntity('player_main');
+                    player.addTag('Player');
+                    player.addComponent({
+                        _type: ComponentType.BaseInfo,
+                        name: '冒险者',
+                        type: 'player'
+                    });
+                    player.addComponent({
+                        _type: ComponentType.NarrativeLog,
+                        history: [
+                            {id: '1', text: '你醒来了，头很痛。周围一片漆黑。', type: 'info', timestamp: Date.now()}
+                        ]
+                    });
+                    player.addComponent({
+                        _type: ComponentType.ChoiceList,
+                        choices: [
+                            {id: 'look', label: '观察四周', actionType: 'LOOK'},
+                            {id: 'inv', label: '检查背包', actionType: 'OPEN_INVENTORY'}
+                        ]
+                    });
+
+                    // 2. 创建一个房间
+                    const room = world.createEntity('room_start');
+                    room.addTag('CurrentRoom'); // 标记这是当前房间
+                    room.addComponent({
+                        _type: ComponentType.BaseInfo,
+                        name: '黑暗的石室',
+                        type: 'room'
+                    });
+                    room.addComponent({
+                        _type: ComponentType.Description,
+                        short: '一个潮湿的石室。',
+                        long: '墙壁上挂着早已熄灭的火把，空气中弥漫着陈旧的霉味。地上似乎有什么东西闪闪发光。'
+                    });
+                }
+
                 postToMain(MainMessageType.READY, undefined);
             } catch (err) {
                 console.error('❌ Worker Init Error Details:', err);

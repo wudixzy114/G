@@ -1,4 +1,4 @@
-import type {ComponentType, EntityID, IComponent, IEntity} from "@/shared/types/ecs.ts";
+import type {ComponentType, EntityID, GameComponent, IComponent, IEntity} from "@/shared/types/ecs.ts";
 import type {DeepReadonly} from "rxdb";
 
 /**
@@ -34,7 +34,7 @@ export class Entity {
      * @param component The component to add.
      * @returns The entity instance for chaining.
      */
-    addComponent(component: IComponent): this {
+    addComponent(component: GameComponent): this {
         this.components[component._type] = component;
         return this;
     }
